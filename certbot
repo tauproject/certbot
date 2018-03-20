@@ -1,0 +1,4 @@
+#! /bin/sh
+
+exec docker run -v /etc/letsencrypt:/etc/letsencrypt -p 127.0.0.1:10080:80 -it tauproject/certbot "$@"
+

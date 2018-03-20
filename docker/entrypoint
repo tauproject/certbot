@@ -1,0 +1,32 @@
+#! /bin/sh
+# $Tau: certbot/docker/entrypoint $
+
+## ------------------------------------------------------------------------- ##
+##                          T A U    P R O J E C T                           ##
+## ------------------------------------------------------------------------- ##
+##                                                                           ##
+## This file forms part of the Tau Project and is subject to copyright.      ##
+##                                                                           ##
+## For full licensing terms, including conditions for redistribution, please ##
+## consult the README document accompanying the source distribution:         ##
+##                                                                           ##
+##   <https://github.com/tauproject/certbot>                                 ##
+##                                                                           ##
+## ------------------------------------------------------------------------- ##
+
+/usr/sbin/nginx
+
+if test x"$1" = x"shell" ; then
+	cd $HOME
+	shift
+	exec /bin/bash "$@"
+	exit
+fi
+
+if test x"$1" = x"/bin/sh" && test x"$2" = x"-c" ; then
+	shift
+	shift
+fi
+
+exec /opt/letsencrypt/letsencrypt-auto "$@"
+exit
