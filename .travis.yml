@@ -9,5 +9,7 @@ script:
   - sudo mkdir /etc/letsencrypt
   - certbot certificates
   - docker push tauproject/certbot:latest
+  - docker push tauproject/certbot:shimmer
+
 
 
