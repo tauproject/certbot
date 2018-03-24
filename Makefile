@@ -13,21 +13,29 @@
 ##                                                                           ##
 ## ------------------------------------------------------------------------- ##
 
+ORG = tauproject
+PACKAGE = certbot
+RELEASE = shimmer
+
 prefix = /usr/local
 exec_prefix = $(prefix)
 bindir = $(prefix)/bin
 
-DOCKERRUNFLAGS = -it tauproject/certbot
+DOCKERIMAGENAME = $(ORG)/$(PACKAGE)
+DOCKERRUNFLAGS = -i -t -e TERM='$(TERM)'
+
+DOCKER = docker
+INSTALL = install
 
 all: container
 
-install: container
-	mkdir -p $(DESTDIR)$(bindir)
-	cp certbot $(DESTDIR)$(bindir)/certbot
-	chmod 755 $(DESTDIR)$(bindir)/certbot
+install:
+	$(INSTALL) -d $(DESTDIR)$(bindir)
+	$(INSTALL) -m 755 certbot $(DESTDIR)$(bindir)/certbot
 
 container:
-	docker build -t tauproject/certbot .
+	$(DOCKER) build -t $(DOCKERIMAGENAME) .
+	$(DOCKER) tag $(DOCKERIMAGENAME) $(DOCKERIMAGENAME):$(RELEASE)
 
 shell: container
-	docker run $(DOCKERRUNFLAGS) shell
+	$(DOCKER) run $(DOCKERRUNFLAGS) $(DOCKERIMAGENAME) shell
