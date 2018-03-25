@@ -1,0 +1,6 @@
+certbot (1:0.0.0) stable; urgency=low
+
+  * Initial release
+
+ -- Tau <tau@tau.zone>  Sat, 24 Mar 2018 19:48:26 +0000
+

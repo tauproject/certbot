@@ -1,4 +1,5 @@
-# $Tau: certbot/Dockerfile $
+#! /usr/bin/make -f
+# $Tau: certbot/debian/rules $
 
 ## ------------------------------------------------------------------------- ##
 ##                          T A U    P R O J E C T                           ##
@@ -13,21 +14,9 @@
 ##                                                                           ##
 ## ------------------------------------------------------------------------- ##
 
-FROM debian:stretch
+%:
+	dh $@
 
-RUN apt-get update -qq -y && \
-	apt-get install -qq -y nginx-light curl procps
+override_dh_auto_install:
+	dh_auto_install -- prefix=/usr sysconfdir=/etc install
 
-COPY letsencrypt /opt/letsencrypt
-RUN /opt/letsencrypt/letsencrypt-auto certificates
-
-EXPOSE 80
-RUN rm -rf /etc/letsencrypt/*
-RUN rm /var/www/html/index.nginx-debian.html
-COPY docker/entrypoint /sbin/container-entrypoint
-RUN chmod 755 /sbin/container-entrypoint
-
-COPY docker/cli.ini /opt/letsencrypt/cli.ini
-
-ENTRYPOINT [ "/sbin/container-entrypoint" ]
-CMD [ "--help" ]

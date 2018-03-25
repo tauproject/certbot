@@ -1,0 +1,16 @@
+Source: certbot
+Build-Depends: debhelper (>= 8.0)
+Maintainer: Tau <tau@tau.zone>
+Vcs-Browser: https://github.com/tauproject/certbot
+Vcs-Git: git://github.com/tauproject/certbot.git
+
+Package: docker-certbot
+Architecture: any
+Provides: certbot
+Replaces: certbot
+Section: admin
+Priority: extra
+Depends: docker-ce | docker
+Description: Use the Let's Encrypt certbot tool via a Docker container
+
+

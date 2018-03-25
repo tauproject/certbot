@@ -1,15 +1,14 @@
 sudo: required
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get -qq -y install docker-ce make
+  - sudo apt-get -qq -y install docker-ce make debhelper dpkg-deb build-essential
 script:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - make
+  - make container
   - sudo make install
-  - sudo mkdir /etc/letsencrypt
   - certbot certificates
+  - dpkg-buildpackage -us -uc
   - docker push tauproject/certbot:latest
   - docker push tauproject/certbot:shimmer
-
 
 

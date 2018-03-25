@@ -27,9 +27,10 @@ DOCKERRUNFLAGS = -i -t -e TERM='$(TERM)'
 DOCKER = docker
 INSTALL = install
 
-all: container
+all:
 
-install:
+install: all
+	$(INSTALL) -d $(DESTDIR)/etc/letsencrypt
 	$(INSTALL) -d $(DESTDIR)$(bindir)
 	$(INSTALL) -m 755 certbot $(DESTDIR)$(bindir)/certbot
 
