@@ -1,14 +1,15 @@
 sudo: required
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get -qq -y install docker-ce make debhelper dpkg-dev build-essential fakeroot
+- sudo apt-get -qq update
+- sudo apt-get -qq -y install docker-ce make debhelper dpkg-dev build-essential fakeroot
 script:
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - make container
-  - sudo make install
-  - certbot certificates
-  - dpkg-buildpackage -us -uc
-  - docker push tauproject/certbot:latest
-  - docker push tauproject/certbot:shimmer
-
-
+- docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- make container
+- sudo make install
+- certbot certificates
+- dpkg-buildpackage -us -uc
+- docker push tauproject/certbot:latest
+- docker push tauproject/certbot:shimmer
+notifications:
+  slack:
+    secure: amjleOFBMrfBg9rrBl5/aAWCIDNwfOQqDynlO3EVe7JbL6md48M/b1PZuSLESkaRC/Cww4qehjaMmyEC48ev3befHJJ006h70n1DbE/i5E106ANSSsnzEVeQLsLsPOPfbOVtMRhmqlZZ0GKP/RqjN6FLAMTWp5DlVlZ66sRyo69GaGeqNzn9ttckQCFZ8J6aXKbKhSicF68g/sT7HA2itLRYSE8vLLra20VRrN30KAIPgSxuaPdzP5YdZnuzo9ZYy4rm/XMwwD3jfpkKaEQu/MFNKQYFDSFsl+2uKwEtH1S4mOMzoHngs4MPYHCS5dfduEAt9OiGR6qchpgGLC6/vITX94WgT4Cv9jNBqHUtOW3X/HNtdr26NpoTOrCP7+/D3yJY/049YhsjEUPa9bTYfSEj2Mdhg+cwSvIMJSJKXt7tazh3X836lo2/Ojo313WIKjuLHeVnTkKpanCidZWIg2vvZQza54Fl8q3O+nOVd0v27TbC2xJSC6N550mBb3oK7bVNhQoNn/zfF1tSS876U9TDsHLl8Aq4ipuZKwGQxPs6EzH4+O2KvJN8RZqilLrRPwqZugpOBK29BoN68kmuzXKXge4/pyxQysraIbHTXpMmvO0BfDkXX1TQspbbJvJC/rI7giEH93Aw+HHxx+Vs+7JsGffbHnGd8r+OZaT7i+0=
