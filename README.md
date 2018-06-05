@@ -1,4 +1,4 @@
-# Tau Project
+# Tau Hypercomputing Facility
 ## Certificate provisioning service container
 
 [![Release status: Pre-production][release-status]](#release-status)
