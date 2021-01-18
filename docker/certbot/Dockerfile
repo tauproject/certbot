@@ -1,5 +1,4 @@
-#! /bin/sh
-# $Tau: certbot/docker/entrypoint $
+# $Tau: certbot/Dockerfile $
 
 ## ------------------------------------------------------------------------- ##
 ##                          T A U    P R O J E C T                           ##
@@ -14,19 +13,20 @@
 ##                                                                           ##
 ## ------------------------------------------------------------------------- ##
 
-/usr/sbin/nginx
+FROM tauproject/core:shimmer
 
-if test x"$1" = x"shell" ; then
-	cd $HOME
-	shift
-	exec /bin/bash "$@"
-	exit
-fi
+RUN apt-get install -qq -y nginx-light curl procps certbot
+EXPOSE 80
+RUN rm -rf /etc/letsencrypt/*
+RUN rm /var/www/html/index.nginx-debian.html
+RUN mkdir /app /app/etc
+COPY scripts/docker/entrypoint /app/entrypoint
+RUN chmod 755 /app/entrypoint
+RUN mkdir -p /var/www/.well-known/acme
+COPY docker/certbot/cli.ini /app/etc/certbot-cli.ini
 
-if test x"$1" = x"/bin/sh" && test x"$2" = x"-c" ; then
-	shift
-	shift
-fi
+VOLUME /etc/letsencrypt
+VOLUME /var/www/html/.well-known/acme
 
-exec /opt/letsencrypt/letsencrypt-auto --config /opt/letsencrypt/cli.ini "$@"
-exit
+ENTRYPOINT [ "/app/entrypoint" ]
+CMD [ "--help" ]

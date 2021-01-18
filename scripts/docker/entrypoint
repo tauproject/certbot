@@ -1,4 +1,5 @@
-# $Tau: certbot/Dockerfile $
+#! /bin/sh
+# $Tau: certbot/docker/entrypoint $
 
 ## ------------------------------------------------------------------------- ##
 ##                          T A U    P R O J E C T                           ##
@@ -13,21 +14,19 @@
 ##                                                                           ##
 ## ------------------------------------------------------------------------- ##
 
-FROM debian:stretch
+/usr/sbin/nginx
 
-RUN apt-get update -qq -y && \
-	apt-get install -qq -y nginx-light curl procps
+if test x"$1" = x"shell" ; then
+	cd $HOME
+	shift
+	exec /bin/bash "$@"
+	exit
+fi
 
-COPY letsencrypt /opt/letsencrypt
-RUN /opt/letsencrypt/letsencrypt-auto certificates
+if test x"$1" = x"/bin/sh" && test x"$2" = x"-c" ; then
+	shift
+	shift
+fi
 
-EXPOSE 80
-RUN rm -rf /etc/letsencrypt/*
-RUN rm /var/www/html/index.nginx-debian.html
-COPY docker/entrypoint /sbin/container-entrypoint
-RUN chmod 755 /sbin/container-entrypoint
-
-COPY docker/cli.ini /opt/letsencrypt/cli.ini
-
-ENTRYPOINT [ "/sbin/container-entrypoint" ]
-CMD [ "--help" ]
+exec /usr/bin/certbot --config /app/etc/certbot-cli.ini "$@"
+exit

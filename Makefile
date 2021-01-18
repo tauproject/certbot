@@ -35,7 +35,7 @@ install: all
 	$(INSTALL) -m 755 certbot $(DESTDIR)$(bindir)/certbot
 
 container:
-	$(DOCKER) build -t $(DOCKERIMAGENAME) .
+	$(DOCKER) build -t $(DOCKERIMAGENAME) -f docker/certbot/Dockerfile .
 	$(DOCKER) tag $(DOCKERIMAGENAME) $(DOCKERIMAGENAME):$(RELEASE)
 
 shell: container
